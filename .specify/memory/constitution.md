@@ -1,50 +1,47 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Project Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Clean Code
+- Purpose: Code must be readable, predictable, and explicit. Favor clarity over cleverness.
+- Practices: use descriptive names, small functions, explicit data shapes, and consistent formatting.
+- Refactoring: keep implementations minimal; refactor opportunistically to reduce complexity.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Simple UX
+- Purpose: Minimize user cognitive load; prefer single-purpose interfaces.
+- Practices: clear affordances, concise copy, predictable flows, and avoid unnecessary features.
+- Accessibility: ensure basic keyboard navigation and semantic markup for assistive tech.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Responsive Design
+- Purpose: Deliver a usable experience across screen sizes and input methods.
+- Practices: mobile-first layouts, fluid spacing, breakpoints for content, and touch-friendly controls.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Minimal Dependencies
+- Purpose: Keep the dependency surface small to reduce maintenance and security risk.
+- Practices: prefer native browser APIs and small, focused libraries; review each dependency for necessity and longevity.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. No Testing (Supreme Rule)
+- Absolutely no testing: no unit tests, no integration tests, no end-to-end (E2E) tests, and no automated test suites of any kind.
+- This rule supersedes all other guidance in this constitution and the project. Any recommendation implying automated tests is explicitly disallowed.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Constraints & Technology
+- The project must use the framework versions declared in `package.json` for runtime compatibility.
+	- Next.js: 16.2.9
+	- React: 19.2.4
+	- Tailwind CSS: ^4 (as declared in `devDependencies`)
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Development Workflow
+- Branching: small, focused branches; PRs should contain minimal, reviewable changes.
+- Reviews: rely on human code review and manual QA in place of automated tests. Reviewers must verify behavior locally and in staging.
+- CI/CD: may run linting and build steps, but must not introduce automated tests into the pipeline.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Security & Observability
+- Keep secrets out of source control; use environment variables and secure stores.
+- Log meaningful events at appropriate levels; prefer structured logs where helpful.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+- This constitution is authoritative for design and development decisions in the project.
+- Amendments require a documented proposal, maintainer approval, and an explicit migration plan.
+- The "No Testing" clause is non-negotiable and overrides conflicting policies.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-06-17 | **Last Amended**: 2026-06-17
