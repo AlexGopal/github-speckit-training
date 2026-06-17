@@ -3,6 +3,15 @@ installed:
 settings:
   auto_execute_hooks: true
 hooks:
+  before_specify:
+  - extension: local
+    command: .specify/scripts/create-branch.ps1
+    enabled: true
+    optional: false
+    priority: 5
+    prompt: Create a git branch for the new spec
+    description: Create git branch for the new specification (auto-generated if no name provided)
+    condition: null
   after_specify:
   - extension: agent-context
     command: speckit.agent-context.update
