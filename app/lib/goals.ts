@@ -7,6 +7,7 @@ export type Goal = {
   created_at: string;
   completed: boolean;
   completed_at: string | null;
+  order?: number;
 };
 
 export type GoalWithDerived = Goal & {
@@ -25,7 +26,32 @@ export function createGoal(title: string, endDate: string): Goal {
     created_at: new Date().toISOString(),
     completed: false,
     completed_at: null,
+    order: undefined,
   };
+}
+
+export function assignMissingOrder(goals: Goal[]): Goal[] {
+  // Ensure active goals have a stable order. Keep existing orders when present.
+  const active = goals.filter((g) => !g.completed);
+
+  // If any active goal lacks an order, assign sequential order based on created_at
+  let nextOrder = 1;
+  const sortedActive = [...active].sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || a.created_at.localeCompare(b.created_at));
+
+  const activeWithOrder = sortedActive.map((g) => ({ ...g, order: g.order ?? nextOrder++ }));
+
+  // Merge back with completed goals preserving their order field if any
+  const completed = goals.filter((g) => g.completed);
+
+  return [...activeWithOrder, ...completed];
+}
+
+export function reindexOrders(goals: Goal[]): Goal[] {
+  // Reindex only active goals starting at 1
+  const active = goals.filter((g) => !g.completed).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const reindexedActive = active.map((g, i) => ({ ...g, order: i + 1 }));
+  const completed = goals.filter((g) => g.completed);
+  return [...reindexedActive, ...completed];
 }
 
 export function getDaysLeft(endDate: string): number {

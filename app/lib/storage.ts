@@ -26,6 +26,7 @@ function parseStorage(value: string): Goal[] {
     created_at: String(item?.created_at ?? new Date().toISOString()),
     completed: Boolean(item?.completed),
     completed_at: item?.completed_at ? String(item.completed_at) : null,
+    order: typeof item?.order === "number" ? item.order : item?.order ? Number(item.order) : undefined,
   }));
 }
 

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { GoalActions } from "./components/goal-actions";
 import { GoalCard } from "./components/goal-card";
+import { GoalActions } from "./components/goal-actions";
+import GoalList from "./components/goal-list";
 import { NewGoalModal } from "./components/new-goal-modal";
 import {
   buttonPrimary,
@@ -13,7 +14,7 @@ import {
   sectionSubtitle,
   sectionTitle,
 } from "./components/theme";
-import { createGoal, decorateGoal, Goal } from "./lib/goals";
+import { createGoal, decorateGoal, Goal, assignMissingOrder, reindexOrders } from "./lib/goals";
 import { loadGoals, saveGoals } from "./lib/storage";
 
 export default function Home() {
@@ -29,19 +30,25 @@ export default function Home() {
       setErrorMessage(result.error);
       setGoals([]);
     } else {
-      setGoals(result.value);
+      // Assign missing order fields for backward compatibility and persist migration
+      const migrated = assignMissingOrder(result.value);
+      const reindexed = reindexOrders(migrated);
+      setGoals(reindexed);
+      // Persist migration if it changed the incoming value
+      try {
+        const incomingJson = JSON.stringify(result.value);
+        const migratedJson = JSON.stringify(reindexed);
+        if (incomingJson !== migratedJson) {
+          saveGoals(reindexed);
+        }
+      } catch (e) {
+        // ignore serialization errors here
+      }
     }
     setHydrated(true);
   }, []);
 
-  const activeGoals = useMemo(
-    () =>
-      goals
-        .filter((goal) => !goal.completed)
-        .map(decorateGoal)
-        .sort((a, b) => a.end_date.localeCompare(b.end_date)),
-    [goals]
-  );
+  const activeGoals = useMemo(() => goals.filter((goal) => !goal.completed).map(decorateGoal).sort((a, b) => (a.order ?? 0) - (b.order ?? 0)), [goals]);
 
   const completedGoals = useMemo(
     () =>
@@ -150,19 +157,25 @@ export default function Home() {
                   No goals yet. Click Add Goal to create your first item.
                 </div>
               ) : (
-                activeGoals.map((goal) => (
-                  <GoalCard
-                    key={goal.id}
-                    goal={goal}
-                    selected={selectedGoalId === goal.id}
-                    onToggleSelect={() => toggleSelect(goal.id)}
-                  >
-                    <GoalActions
-                      onComplete={() => handleComplete(goal.id)}
-                      onDelete={() => handleDelete(goal.id)}
-                    />
-                  </GoalCard>
-                ))
+                <GoalList
+                  goals={activeGoals}
+                  selectedGoalId={selectedGoalId}
+                  onToggleSelect={(id) => toggleSelect(id)}
+                  onReorder={(ids) => {
+                    // Map incoming ids to new order and persist
+                    const idToIndex = new Map<string, number>();
+                    ids.forEach((id, idx) => idToIndex.set(id, idx + 1));
+                    const nextGoals = goals.map((g) => ({
+                      ...g,
+                      order: g.completed ? g.order : idToIndex.get(g.id) ?? g.order,
+                    }));
+
+                    if (!persistGoals(nextGoals)) return;
+                    setGoals(nextGoals);
+                  }}
+                  onComplete={(id) => handleComplete(id)}
+                  onDelete={(id) => handleDelete(id)}
+                />
               )}
             </div>
           </section>
