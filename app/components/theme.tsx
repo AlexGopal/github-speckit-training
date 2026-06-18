@@ -1,0 +1,13 @@
+export const pageShell = "min-h-screen bg-[var(--color-background)] text-[var(--color-text)]";
+export const pageInner = "mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10";
+export const sectionCard = "rounded-[28px] border border-[var(--color-border)] bg-[var(--color-card)] shadow-[0_18px_45px_-30px_rgba(15,23,42,0.75)]";
+export const sectionHeader = "mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between";
+export const sectionTitle = "text-xl font-semibold text-[var(--color-text)]";
+export const sectionSubtitle = "text-sm text-[var(--color-muted)]";
+export const buttonPrimary = "inline-flex items-center justify-center rounded-2xl bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-background)] transition hover:bg-[var(--color-accent-strong)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]";
+export const buttonSecondary = "inline-flex items-center justify-center rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm font-medium text-[var(--color-text)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]";
+export const dangerButton = "inline-flex items-center justify-center rounded-2xl bg-[var(--color-danger)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#dc2626] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-danger)]";
+export const inputField = "w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3 text-sm text-[var(--color-text)] outline-none transition focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/40";
+export const cardEntry = "rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm";
+export const cardHighlight = "ring-1 ring-[var(--color-highlight)]/60";
+export const cardUrgent = "ring-1 ring-[var(--color-danger)]/60";
